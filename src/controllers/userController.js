@@ -1,36 +1,48 @@
+const { userSchema } = require('../validations/userValidations');
+const logger = require('../config/logger');
+
 const createUserController = (userService) => {
-  
   const register = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { error } = userSchema.validate(req.body);
+    if (error) {
+      logger.error('Invalid user data provided', { error: error.details[0].message });
+      return res.status(400).json({ message: error.details[0].message });
+    }
+
+    const { username, password } = req.body;
 
     try {
-      await userService.register(name, email, password);
-      return res.status(201).json({ message: 'Usuário criado com sucesso' });
+      await userService.register(username, password);
+      logger.info('User registered successfully', { username });
+      res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
-      return res.status(400).json({ message: error.message });
+      logger.error('Error registering user', { error: error.message, username });
+      res.status(400).json({ message: error.message });
     }
   };
 
   const login = async (req, res) => {
-    const { email, password } = req.body;
+    const { error } = userSchema.validate(req.body);
+    if (error) {
+      logger.error('Invalid login data provided', { error: error.details[0].message });
+      return res.status(400).json({ message: error.details[0].message });
+    }
+
+    const { username, password } = req.body;
 
     try {
-      const token = await userService.login(email, password);
-      return res.status(200).json({ token });
+      const token = await userService.login(username, password);
+      logger.info('User logged in successfully', { username });
+      res.json({ token });
     } catch (error) {
-      return res.status(401).json({ message: error.message });
+      logger.error('Error logging in user', { error: error.message, username });
+      res.status(401).json({ message: error.message });
     }
-  };
-
-  const getUsers = (req, res) => {
-    const users = userService.getUsers();
-    return res.status(200).json(users);
   };
 
   return {
     register,
-    login,
-    getUsers,
+    login
   };
 };
 

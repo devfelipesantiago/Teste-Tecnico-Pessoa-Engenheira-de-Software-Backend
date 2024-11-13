@@ -1,5 +1,6 @@
 const { userSchema } = require('../validations/userValidations');
 const logger = require('../config/logger');
+const { userRegistrationCounter, userLoginCounter } = require('../config/metrics');
 
 const createUserController = (userService) => {
   const register = async (req, res) => {
@@ -14,6 +15,7 @@ const createUserController = (userService) => {
     try {
       await userService.register(username, password);
       logger.info('User registered successfully', { username });
+      userRegistrationCounter.inc();
       res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
       logger.error('Error registering user', { error: error.message, username });
@@ -33,6 +35,7 @@ const createUserController = (userService) => {
     try {
       const token = await userService.login(username, password);
       logger.info('User logged in successfully', { username });
+      userLoginCounter.inc();
       res.json({ token });
     } catch (error) {
       logger.error('Error logging in user', { error: error.message, username });

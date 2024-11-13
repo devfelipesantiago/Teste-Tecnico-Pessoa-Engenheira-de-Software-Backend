@@ -1,8 +1,14 @@
+// src/controllers/urlController.js
 const { urlSchema, updateUrlSchema } = require('../validations/urlValidations');
 const logger = require('../config/logger');
+const {
+  urlShortenedCounter,
+  urlRedirectCounter,
+  urlUpdateCounter,
+  urlDeleteCounter
+} = require('../config/metrics');
 
 const createUrlController = (urlService) => {
-  
   const shortenUrl = async (req, res) => {
     const { error } = urlSchema.validate(req.body);
     if (error) {
@@ -16,6 +22,7 @@ const createUrlController = (urlService) => {
     try {
       const shortUrl = await urlService.shortenUrl(url, userId);
       logger.info('URL shortened successfully', { shortCode: shortUrl.shortCode });
+      urlShortenedCounter.inc({ user_type: userId ? 'authenticated' : 'anonymous' });
       res.status(201).json({ shortUrl: `${process.env.BASE_URL}/${shortUrl.shortCode}` });
     } catch (error) {
       logger.error('Error shortening URL', { error: error.message });
@@ -29,6 +36,7 @@ const createUrlController = (urlService) => {
       const originalUrl = await urlService.getOriginalUrl(shortCode);
       if (originalUrl) {
         logger.info('Redirecting to original URL', { shortCode, originalUrl });
+        urlRedirectCounter.inc();
         res.redirect(originalUrl);
       } else {
         logger.warn('URL not found', { shortCode });
@@ -67,6 +75,7 @@ const createUrlController = (urlService) => {
       const success = await urlService.updateUrl(shortCode, newUrl, userId);
       if (success) {
         logger.info('URL updated successfully', { shortCode, userId });
+        urlUpdateCounter.inc();
         res.json({ message: 'URL updated successfully' });
       } else {
         logger.warn('URL not found or user does not have permission', { shortCode, userId });
@@ -86,6 +95,7 @@ const createUrlController = (urlService) => {
       const success = await urlService.deleteUrl(shortCode, userId);
       if (success) {
         logger.info('URL deleted successfully', { shortCode, userId });
+        urlDeleteCounter.inc();
         res.json({ message: 'URL deleted successfully' });
       } else {
         logger.warn('URL not found or user does not have permission', { shortCode, userId });

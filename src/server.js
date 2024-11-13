@@ -1,3 +1,11 @@
 const app = require('./app');
+const sequelize = require('./config/database');
 
-app.listen(3000, () => console.log('server running on port 3000'));
+const PORT = process.env.PORT || 3000;
+
+sequelize.sync().then(() => {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+    console.log(`Swagger documentation available at http://localhost:${PORT}/api-docs`);
+  });
+});

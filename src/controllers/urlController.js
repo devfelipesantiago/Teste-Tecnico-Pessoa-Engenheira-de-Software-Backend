@@ -1,4 +1,3 @@
-// src/controllers/urlController.js
 const { urlSchema, updateUrlSchema } = require('../validations/urlValidations');
 const logger = require('../config/logger');
 const {

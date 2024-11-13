@@ -52,5 +52,3 @@ const createUrlService = () => {
 };
 
 module.exports = createUrlService;
-
-console.log('URL service created');

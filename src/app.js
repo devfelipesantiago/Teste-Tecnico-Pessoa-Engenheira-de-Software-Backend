@@ -8,6 +8,7 @@ const createUrlController = require('./controllers/urlController');
 const createUserController = require('./controllers/userController');
 const createUrlRoutes = require('./routes/urlRoutes');
 const createUserRoutes = require('./routes/userRoutes');
+const createMetricsRoutes = require('./config/metricsRoutes');
 const logger = require('./config/logger');
 
 const app = express();
@@ -23,9 +24,11 @@ const userController = createUserController(userService);
 
 const urlRoutes = createUrlRoutes(urlController);
 const userRoutes = createUserRoutes(userController);
+const metricsRoutes = createMetricsRoutes();
 
 app.use('/api/urls', urlRoutes);
 app.use('/api/users', userRoutes);
+app.use('/metrics', metricsRoutes);
 
 app.use((err, req, res, next) => {
   logger.error('Unhandled error', { error: err.message, stack: err.stack });

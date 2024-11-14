@@ -3,6 +3,7 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 
 const createUserService = (secretKey) => {
+  
   const register = async (username, password) => {
     const existingUser = await User.findOne({ where: { username } });
     if (existingUser) {
@@ -35,5 +36,3 @@ const createUserService = (secretKey) => {
 };
 
 module.exports = createUserService;
-
-console.log('User service created');

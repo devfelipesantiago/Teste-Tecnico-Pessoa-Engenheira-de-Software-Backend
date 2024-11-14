@@ -1,9 +1,15 @@
-const { DataTypes, Sequelize } = require('sequelize');
+const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
 const Url = sequelize.define('Url', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true
+  },
   longUrl: {
-    type: DataTypes.STRING,
+    type: DataTypes.TEXT,
     allowNull: false
   },
   shortCode: {
@@ -18,12 +24,6 @@ const Url = sequelize.define('Url', {
   userId: {
     type: DataTypes.INTEGER,
     allowNull: true
-  }, 
-  id: {
-    type: Sequelize.INTEGER.UNSIGNED,
-    autoIncrement: true,
-    allowNull: false,
-    primaryKey: true
   }
 });
 

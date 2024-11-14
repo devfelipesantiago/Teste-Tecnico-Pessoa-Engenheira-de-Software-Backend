@@ -3,6 +3,7 @@ const logger = require('../config/logger');
 const { userRegistrationCounter, userLoginCounter } = require('../config/metrics');
 
 const createUserController = (userService) => {
+  
   const register = async (req, res) => {
     const { error } = userSchema.validate(req.body);
     if (error) {

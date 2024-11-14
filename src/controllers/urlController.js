@@ -8,8 +8,10 @@ const {
 } = require('../config/metrics');
 
 const createUrlController = (urlService) => {
+
   const shortenUrl = async (req, res) => {
     const { error } = urlSchema.validate(req.body);
+    
     if (error) {
       logger.error('Invalid URL provided', { error: error.details[0].message });
       return res.status(400).json({ message: error.details[0].message });
@@ -20,9 +22,18 @@ const createUrlController = (urlService) => {
 
     try {
       const shortUrl = await urlService.shortenUrl(url, userId);
-      logger.info('URL shortened successfully', { shortCode: shortUrl.shortCode });
-      urlShortenedCounter.inc({ user_type: userId ? 'authenticated' : 'anonymous' });
-      res.status(201).json({ shortUrl: `${process.env.BASE_URL}/${shortUrl.shortCode}` });
+      logger.info('URL shortened successfully', { 
+        shortCode: shortUrl.shortCode 
+      });
+
+      urlShortenedCounter.inc({
+        user_type: userId 
+        ? 'authenticated' 
+        : 'anonymous'
+      });
+
+      res.status(201)
+        .json({ shortUrl: `${process.env.BASE_URL}/${shortUrl.shortCode}`});
     } catch (error) {
       logger.error('Error shortening URL', { error: error.message });
       res.status(500).json({ message: 'Error shortening URL' });

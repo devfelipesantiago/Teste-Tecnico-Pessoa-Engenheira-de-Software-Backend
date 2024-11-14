@@ -70,3 +70,43 @@
 - O código deve estar armazenado em um repositório público, preferencialmente GitHub.
 
 Desejamos boa sorte em seu processo!
+
+
+# Como inicir o projeto
+
+- Clone o repositório ou faça um fork.
+  ```bash 
+  git clone git@github.com:devfelipesantiago/Teste-Tecnico-Pessoa-Engenheira-de-Software-Backend.git
+ 
+
+## Pré-requisitos 
+- Certifique-se de ter o Node.js e o npm (Node Package Manager) instalados em sua máquina. Você pode baixar o Node.js e o npm [aqui](https://nodejs.org/).
+
+## Instalação Para instalar as dependências do projeto, execute o comando abaixo na raiz do projeto: 
+  ```bash 
+  npm install 
+  ```
+
+## Scripts Disponíveis
+
+- No package.json, há vários scripts disponíveis para facilitar o desenvolvimento e a execução do projeto:
+  - start: Inicia o servidor sem o nodemon.
+  ```bash 
+  npm start
+  ```
+
+  - dev: Inicia o servidor com nodemon, que automaticamente reinicia o servidor quando alterações são detectadas.
+  ```bash 
+  npm run dev
+  ```
+
+  - test: Executa os testes utilizando o jest.
+  ```bash
+  npm test
+  ```
+
+ ## Rotas
+
+  - link http://localhost:3000/api-docs/
+
+  ![alt text](image.png)

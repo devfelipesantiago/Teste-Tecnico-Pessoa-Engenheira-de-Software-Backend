@@ -2,6 +2,12 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../config/database');
 
 const User = sequelize.define('User', {
+  id: {
+    type: DataTypes.INTEGER,
+    autoIncrement: true,
+    allowNull: false,
+    primaryKey: true
+  },
   username: {
     type: DataTypes.STRING,
     allowNull: false,
@@ -14,5 +20,3 @@ const User = sequelize.define('User', {
 });
 
 module.exports = User;
-
-console.log('User model defined');

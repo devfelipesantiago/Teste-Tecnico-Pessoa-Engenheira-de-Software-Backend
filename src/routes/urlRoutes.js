@@ -146,5 +146,3 @@ const createUrlRoutes = (urlController) => {
 };
 
 module.exports = createUrlRoutes;
-
-console.log('URL routes created with Swagger documentation');

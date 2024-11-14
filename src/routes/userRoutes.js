@@ -72,5 +72,3 @@ const createUserRoutes = (userController) => {
 };
 
 module.exports = createUserRoutes;
-
-console.log('User routes created with Swagger documentation');
